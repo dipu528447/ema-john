@@ -22,7 +22,7 @@ const NavBar = (props) => {
                         <input type="text" className="form-control" id="inputPassword" placeholder="Search"></input>
                     </div>
                     <div className='col-sm-1 my-3'>
-                        <button className='btn btn-dark rounded'>cart</button>
+                        <button className='btn btn-dark rounded'>Search</button>
                     </div>
                     <div className='col-sm-1 my-3'>
                         <p className='fs-5'>Items : {items.length}</p>
