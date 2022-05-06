@@ -7,17 +7,17 @@ const NavBar = (props) => {
     const items = props.items;
     const [user,setUser]= useContext(userContext)
     const navigate= useNavigate();
-    
+
     function logout(){
         const auth = getAuth();
-        signOut(auth).then(setUser({isSigned:false}))
+        signOut(auth)
         .catch((error) => {
         // An error happened.
         console.log(error)
         });
-
-        localStorage.setItem("LoggedUser",JSON.stringify({email: '',name:''}))
-        navigate("/")
+        setUser({});
+        // localStorage.setItem("LoggedUser",JSON.stringify({email: '',name:''}))
+        navigate("/login")
     }
     return (
         <>

@@ -1,20 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword ,signInWithPopup,FacebookAuthProvider, GoogleAuthProvider} from "firebase/auth";
 import {useContext} from 'react';
 import {userContext} from '../../../App'
 
 const Login = () => {
     const [user,setUser] = useContext(userContext)
+    const navigate = useNavigate();
     function loginWithFb(){
         const auth = getAuth();
         const provider = new FacebookAuthProvider();
         signInWithPopup(auth, provider)
-        .then(setUser({isSigned: true}))
-        .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
+        .then(function(result){
+            setUser({isSigned:true,email:result.user.email,name:result.user.displayName})
+            navigate("/dashboard");
+        })
+        // .then(setUser({isSigned: true}))
+        // .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
         .catch((error) => {
             const errorMessage = error.message;
             console.log(errorMessage)
+            navigate("/login");
         });
     }
     function loginwithGmail(){
@@ -22,12 +28,18 @@ const Login = () => {
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
         signInWithPopup(auth, provider)
-        .then(setUser({isSigned: true}))
-        .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
+        .then(function(result){
+            setUser({isSigned:true,email:result.user.email,name:result.user.displayName})
+            navigate("/dashboard");
+        })
+        // .then(setUser({isSigned: true}))
+        // .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
         .catch((error) => {            
             const errorMessage = error.message;
             alert(errorMessage)
+            navigate("/login");
         });
+        
     }
 
     function loginWithEmail(){
@@ -36,12 +48,18 @@ const Login = () => {
         const password = document.getElementById("inputPassword").value;
         if(isValid(email,password)){
             signInWithEmailAndPassword(auth, email, password)
-            .then(setUser({isSigned:true}))
-            .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
+            .then(function(result){
+                setUser({isSigned:true,email:email,name:''})
+                navigate("/dashboard");
+            })
+            // .then(setUser({isSigned:true}))
+            // .then(userCredential=>localStorage.setItem("LoggedUser",JSON.stringify({email: userCredential.user.email,name:userCredential.user.displayName})))
             .catch((error) => {
                 const errorMessage = error.message;
                 console.log(errorMessage);
+                navigate("/login");
             })
+            
         }
         
     }
@@ -99,7 +117,7 @@ const Login = () => {
                                 
                                 <div className="mb-3 row d-flex justify-content-center">
                                     <div className="col-sm-4">
-                                       <Link to="/dashboard"> <input className='form-submit' type="button" value="Login" onClick={loginWithEmail}/></Link>
+                                        <input className='form-submit' type="button" value="Login" onClick={loginWithEmail}/>
                                     </div>
                                     <div className="col-sm-4">
                                         <Link className='form-link' to="/NewAccount">
@@ -109,10 +127,10 @@ const Login = () => {
                                 </div>
                                 <div className="mb-3 row d-flex justify-content-center">
                                     <div className="col-sm-4">
-                                       <Link to="/dashboard"> <i className='form-submit material-icons' type="button" onClick={loginWithFb}>facebook</i></Link>
+                                        <i className='form-submit material-icons' type="button" onClick={loginWithFb}>facebook</i>
                                     </div>
                                     <div className="col-sm-4">
-                                        <Link to="/dashboard"> <i className='form-submit material-icons' style={{"color":"red" }} type="button" onClick={loginwithGmail}>mail</i></Link>
+                                        <i className='form-submit material-icons' style={{"color":"red" }} type="button" onClick={loginwithGmail}>mail</i>
                                     </div>                                    
                                 </div>
                             </form>
