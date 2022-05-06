@@ -1,6 +1,6 @@
-
-import Cart from '../Body/Cart/Cart';
-import Order from '../Body/Order/Order'
+import React from 'react';
+import Cart from '../Cart/Cart';
+import Order from '../Order/Order'
 import './Shop.css'
 
 const Shop = (props) => {

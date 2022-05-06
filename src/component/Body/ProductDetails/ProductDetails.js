@@ -1,7 +1,7 @@
-// import React from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import fakeData from './../fakeData/index';
-import Cart from './Cart/Cart';
+import fakeData from '../../fakeData/index';
+import Cart from '../Cart/Cart';
 
 const ProductDetails = () => {
     const {productKey} = useParams();

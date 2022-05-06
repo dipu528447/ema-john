@@ -33,7 +33,7 @@ const Order = (props) => {
                 </div>
             </div>
             {props.OrderDetails && <Link to={"/orderDetails"}><button className='btn btn-warning mx-5'>Review Order</button></Link>}
-            {!props.OrderDetails && <button className='btn btn-danger'>Place Order</button>}
+            <Link to = '/login'>{!props.OrderDetails && <button className='btn btn-danger'>Place Order</button>}</Link>
         </div>
     );
 };

@@ -1,8 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import React,{useContext} from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { userContext } from './../../App';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, signOut } from "firebase/auth";
 const NavBar = (props) => {
     const items = props.items;
+    const [user,setUser]= useContext(userContext)
+    const navigate= useNavigate();
+    
+    function logout(){
+        const auth = getAuth();
+        signOut(auth).then(setUser({isSigned:false}))
+        .catch((error) => {
+        // An error happened.
+        console.log(error)
+        });
+
+        localStorage.setItem("LoggedUser",JSON.stringify({email: '',name:''}))
+        navigate("/")
+    }
     return (
         <>
             <div className="d-flex justify-content-center">
@@ -13,7 +29,7 @@ const NavBar = (props) => {
                     <Link style={{"textDecoration":"none"}} to={"/shop"} className='text-warning fs-4'>Shop</Link>
                     <Link style={{"textDecoration":"none"}} to={"/orderDetails"} className='text-warning fs-4'>Order Review</Link>
                     <Link style={{"textDecoration":"none"}} to={"/manageOrder"} className='text-warning fs-4'>Manage Inventory Here</Link>
-                    
+                    {user.isSigned && <button onClick={logout} className='btn btn-info'>SignOut</button>}
                 </ul>
             </div>
             <div className='container-fluid bg-info'>
